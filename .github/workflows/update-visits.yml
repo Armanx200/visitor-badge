@@ -1,0 +1,36 @@
+name: Update Visits
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 * * * *' # Runs every hour
+
+jobs:
+  update-visits:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Increment visit counter
+        run: |
+          visits=$(cat visits.txt)
+          visits=$((visits + 1))
+          echo $visits > visits.txt
+
+      - name: Update README.md
+        run: |
+          visits=$(cat visits.txt)
+          badge="![Visits](https://img.shields.io/badge/Visits-$visits-blue)"
+          sed -i '/!\[Visits\]/c\'"$badge" README.md
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add visits.txt README.md
+          git commit -m 'Update visits count'
+          git push
