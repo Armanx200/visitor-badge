@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/5 * * * *' # Runs every hour
+    - cron: '*/5 * * * *' # Runs every Min
 
 jobs:
   update-visits:
@@ -14,17 +14,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
+
       - name: Increment visit counter
+        id: increment
         run: |
           visits=$(cat visits.txt)
+          echo "Current visits: $visits"
           visits=$((visits + 1))
+          echo "Updated visits: $visits"
           echo $visits > visits.txt
+          echo "::set-output name=visits::$visits"
 
       - name: Update README.md
         run: |
-          visits=$(cat visits.txt)
+          visits=${{ steps.increment.outputs.visits }}
           badge="![Visits](https://img.shields.io/badge/Visits-$visits-blue)"
+          echo "Updating README.md with badge: $badge"
           sed -i '/!\[Visits\]/c\'"$badge" README.md
 
       - name: Commit changes
