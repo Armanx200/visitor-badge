@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/5 * * * *' # Runs every Min
+    - cron: '*/5 * * * *' # Runs every 5 minutes
 
 jobs:
   update-visits:
@@ -18,10 +18,9 @@ jobs:
       - name: Increment visit counter
         id: increment
         run: |
+          if [ ! -f visits.txt ]; then echo "0" > visits.txt; fi
           visits=$(cat visits.txt)
-          echo "Current visits: $visits"
           visits=$((visits + 1))
-          echo "Updated visits: $visits"
           echo $visits > visits.txt
           echo "::set-output name=visits::$visits"
 
@@ -29,8 +28,7 @@ jobs:
         run: |
           visits=${{ steps.increment.outputs.visits }}
           badge="![Visits](https://img.shields.io/badge/Visits-$visits-blue)"
-          echo "Updating README.md with badge: $badge"
-          sed -i '/!\[Visits\]/c\'"$badge" README.md
+          sed -i 's|!\[Visits\](https://img.shields.io/badge/Visits-.*-blue)|'"$badge"'|' README.md
 
       - name: Commit changes
         run: |
