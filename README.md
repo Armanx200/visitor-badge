@@ -1,6 +1,6 @@
 # Visitor Badge Installation Guide 🚀
 
-![Visits](https://img.shields.io/badge/Visits-19673-blue)
+![Visits](https://img.shields.io/badge/Visits-19674-blue)
 
 Welcome to the `visitor-badge` repository by [Arman Kianian](https://github.com/Armanx200)! This guide will help you set up and use the visitor badge to track visits to your GitHub repository. Let's get started! 🎉
 
@@ -40,7 +40,7 @@ echo "0" > visits.txt
 Update your `README.md` file to include the visit badge. Add the following line where you want the badge to appear:
 
 ```markdown
-![Visits](https://img.shields.io/badge/Visits-19673-blue)
+![Visits](https://img.shields.io/badge/Visits-19674-blue)
 ```
 
 ### 5. Set Up GitHub Actions ⚙️
@@ -77,7 +77,7 @@ jobs:
       - name: Update README.md
         run: |
           visits=${{ steps.increment.outputs.visits }}
-          badge="![Visits](https://img.shields.io/badge/Visits-19673-blue)"
+          badge="![Visits](https://img.shields.io/badge/Visits-19674-blue)"
           sed -i 's|!\[Visits\](https://img.shields.io/badge/Visits-.*-blue)|'"$badge"'|' README.md
 
       - name: Commit changes
@@ -103,7 +103,7 @@ git push origin main
 
 Once everything is set up, your visit count will be updated automatically every 15 minutes. You can view the visit badge in your `README.md`:
 
-![Visits](https://img.shields.io/badge/Visits-19673-blue)
+![Visits](https://img.shields.io/badge/Visits-19674-blue)
 
 ## Congratulations! 🎉
 
